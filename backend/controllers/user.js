@@ -132,8 +132,27 @@ const activateAccount = async(req,res) =>{
         res.status(500).send({msg:error.message});
     }
 }
+const sendVerification = async(req,res) =>{
+    try {
+        const id = req.user.id;
+        const user = await model.findById(id);
+        if(user.Verfied === true){
+            res.status(400).send({msg:"The account is already verified"});
+        }
+        const emailVerificationToken = generatetoken({
+            id:user._id.toString()
+        },'50m')
+    const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`
+    // sendVerificationToken(user.email,user.first_name,url)
+    // temporary
+    return res.status(200).send({msg:"Link send to email",activateLink: url});
+    } catch (error) {
+        return res.status(500).send({msg: error});
+    }
+}
 module.exports = {
     register,
     login,
-    activateAccount
+    activateAccount,
+    sendVerification
 }

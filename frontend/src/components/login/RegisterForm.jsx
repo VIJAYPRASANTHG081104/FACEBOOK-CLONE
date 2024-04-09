@@ -81,7 +81,7 @@ const RegisterForm = ({setVisible}) => {
   const registerSubmit = async () => {
     try {
       const {data} = await axios.post(
-        `${import.meta.VITE_API_BACKEND_URL}/register`,
+        `${import.meta.env.VITE_API_BACKEND_URL}/register`,
         {
           first_name,
           last_name,

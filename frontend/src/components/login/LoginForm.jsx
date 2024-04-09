@@ -38,7 +38,7 @@ const LoginForm = ({setVisible}) => {
     const loginSubmit = async() =>{
       try {
         setLoading(true);
-        const {data} = await axios.post(`${import.meta.VITE_API_BACKEND_URL}/login`,{
+        const {data} = await axios.post(`${import.meta.env.VITE_API_BACKEND_URL}/login`,{
           email:email,password:password
         })
           dispatch({type:"LOGIN",payload: data})
