@@ -25,6 +25,7 @@ const RegisterForm = ({setVisible}) => {
     gender: "",
   };
   const [user, setUser] = useState(userInfos);
+  console.log(user);
   const {
     first_name,
     last_name,
@@ -78,10 +79,9 @@ const RegisterForm = ({setVisible}) => {
  
 
   const registerSubmit = async () => {
-    console.log("Ima")
     try {
       const {data} = await axios.post(
-        "http://localhost:8000/register",
+        `${import.meta.VITE_API_BACKEND_URL}/register`,
         {
           first_name,
           last_name,
@@ -93,7 +93,6 @@ const RegisterForm = ({setVisible}) => {
           gender,
         }
       );
-      console.log(data)
       setError("");
       setSuccess(data.msg);
       const {msg,...rest} = data;

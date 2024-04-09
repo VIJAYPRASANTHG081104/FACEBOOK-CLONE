@@ -1,20 +1,22 @@
 import React, { useRef, useState } from 'react'
 import Header from '../../components/header'
-import clickOutSide from '../../helper/clickOutSide'
-
+import HomeLeft from '../../components/home/left';
+import { useSelector } from 'react-redux';
+import RightHome from '../../components/home/right';
+import Stories from '../../components/home/stories';
+import './style.css'
+import CreatePost from '../../components/createPost';
 const Home = () => {
-  const [visible,setVisible] = useState(true);
-  const ref = useRef(null);
-
-  clickOutSide(ref,()=>{
-    setVisible(false)
-  });
+  const user  = useSelector((state)=>state.user);
   return (
-    <div>
+    <div className='home'>
       <Header/>
-      {
-        visible && <div className='card' ref={ref}>heeeeeeee</div>
-      }
+      <HomeLeft user={user}/>
+      <div className='home_middle'>
+          <Stories/>
+          <CreatePost user={user}/>
+      </div>
+      <RightHome user={user}/>
     </div>
   )
 }

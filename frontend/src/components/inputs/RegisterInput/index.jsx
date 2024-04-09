@@ -2,7 +2,8 @@ import React from "react";
 import "./style.css";
 import { ErrorMessage, useField } from "formik";
 import {useMediaQuery} from "react-responsive"
-const RegisterInput = ({ placeholder,bottom, ...props }) => {
+const RegisterInput = ({ placeholder, ...props }) => {
+
   const [field, meta] = useField(props);
   const view1 = useMediaQuery({
     query: "(min-width: 539px)",
@@ -30,8 +31,6 @@ const RegisterInput = ({ placeholder,bottom, ...props }) => {
               : "300px"
           }`,
         }}
-        // type={field.type}
-        // name={field.name}
         placeholder={placeholder}
         {...field}
         {...props}

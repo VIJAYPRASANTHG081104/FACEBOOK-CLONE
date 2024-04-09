@@ -3,7 +3,8 @@ export function userReducer(state = Cookie.get("user") ? JSON.parse(Cookie.get('
     switch(action.type){
         case "LOGIN":
             return action.payload;
-
+        case "VERIFY":
+            return {...state,Verfied:action.payload};
         default:
             return state
     }

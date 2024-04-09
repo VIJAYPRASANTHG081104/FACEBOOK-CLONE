@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./style.css";
 import { Link } from "react-router-dom";
 import Logo from "../../svg/logo.jsx";
@@ -15,33 +15,49 @@ import Notification from "../../svg/notifications.jsx";
 
 import { useSelector } from "react-redux";
 import SearchMenu from "./SearchMenu.jsx";
+import AllMenu from "./AllMenu.jsx";
+import clickOutSide from "../../helper/clickOutSide.js";
+import UserMenu from "./userMenu/index.jsx";
 const Header = () => {
   const user = useSelector((state) => state.user);
   console.log(user);
   const color = "#65676b";
 
-  const [showSearchMenu,setShowSearchMenu] = useState(false);
+  const [showSearchMenu, setShowSearchMenu] = useState(false);
+  const [showAllMenu, setShowMenu] = useState(false);
+  const [showuserMenu, setShowUserMenu] = useState(false);
+
+  const allMenu = useRef();
+
+  clickOutSide(allMenu, () => {
+    setShowMenu(false);
+  });
+  
+  const usermenu = useRef();
+  clickOutSide(usermenu, () => {
+    setShowUserMenu(false);
+  });
+  console.log
   return (
     <header>
       <div className="header_left">
-
-          <Link to="/" className="header_logo">
-            <div className="circle">
-              <Logo />
-            </div>
-          </Link>
-          <div className="search search1" onClick={()=>setShowSearchMenu(true)}>
-            <Search color={color} />
-            <input
-              type="text"
-              placeholder="Search Facebook"
-              className="hide_input"
-            />
+        <Link to="/" className="header_logo">
+          <div className="circle">
+            <Logo />
           </div>
+        </Link>
+        <div className="search search1" onClick={() => setShowSearchMenu(true)}>
+          <Search color={color} />
+          <input
+            type="text"
+            placeholder="Search Facebook"
+            className="hide_input"
+          />
+        </div>
       </div>
-      {
-        showSearchMenu && <SearchMenu setShowSearchMenu={setShowSearchMenu} color={color} />
-      }
+      {showSearchMenu && (
+        <SearchMenu setShowSearchMenu={setShowSearchMenu} color={color} />
+      )}
       <div className="header_middle">
         <Link to="/" className="middle_icon active">
           <HomeActive />
@@ -65,8 +81,11 @@ const Header = () => {
           <img src={user?.picture} alt="user_img" />
           <span>{user?.first_name}</span>
         </Link>
-        <div className="circle_icon hover1">
-          <Menu />
+        <div className={`circle_icon hover1  ${showAllMenu && 'active_header'}`} ref={allMenu}>
+          <div onClick={() => setShowMenu((prev) => !prev)}>
+            <Menu />
+          </div>
+          {showAllMenu && <AllMenu />}
         </div>
         <div className="circle_icon hover1">
           <Messenger />
@@ -75,8 +94,11 @@ const Header = () => {
           <Notification />
           <div className="right_notification">8</div>
         </div>
-        <div className="circle_icon hover1">
-          <ArrowDown />
+        <div className="circle_icon hover1" ref={usermenu}>
+          <div onClick={() => setShowUserMenu((prev) => !prev)}>
+            <ArrowDown />
+          </div>
+          {showuserMenu && <UserMenu user={user} />}
         </div>
       </div>
     </header>

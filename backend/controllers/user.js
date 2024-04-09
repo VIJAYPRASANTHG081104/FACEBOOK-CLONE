@@ -1,5 +1,6 @@
 const model = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const {validationEmail, validateLength, validateUserName} = require('../helper/validation');
 const { generatetoken } = require('../helper/token');
 const register = async(req,res) =>{
@@ -65,7 +66,7 @@ const register = async(req,res) =>{
             first_name:user.first_name,
             last_name:user.last_name,
             token:token,
-            verified:user.Verfied,
+            Verfied:user.Verfied,
             msg:"Register Success"
         })
         // return res.send(emailVerificationToken)
@@ -97,14 +98,42 @@ const login = async(req,res) =>{
             first_name:user.first_name,
             last_name:user.last_name,
             token:token,
-            verified:user.Verfied,
+            Verfied:user.Verfied,
             msg:"Register Success"
         })
     } catch (error) {
         res.status(500).send({err: error});
     }
 }
+
+
+const activateAccount = async(req,res) =>{
+    
+    try {
+        const validId = req.user.id;
+        console.log(validId);
+        const {token} = req.body;
+
+        const user =  jwt.verify(token,process.env.TOKEN_SECRET);
+        // console.log(user);     
+        if(validId !== user.id){
+            return res.status(500).send({msg:"Your not allowed to use this link"});
+        }   
+        const check = await model.findById(user.id);
+        if(check.Verfied === true){
+            return res.status(400).send({msg:"This email is already verified"});
+        }
+        else{
+            await model.findByIdAndUpdate(user.id,{Verfied:true});
+            return res.status(200).send({msg:"Account has been activated successfully "});
+        }
+    } catch (error) {
+
+        res.status(500).send({msg:error.message});
+    }
+}
 module.exports = {
     register,
-    login
+    login,
+    activateAccount
 }
