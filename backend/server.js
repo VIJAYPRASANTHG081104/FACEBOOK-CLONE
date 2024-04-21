@@ -4,12 +4,18 @@ const app = express();
 const { readdirSync } = require("fs");
 const cors = require("cors");
 const mongoose = require('mongoose');
+const fileUpload = require('express-fileupload');
 const options = {
   origin: "http://localhost:5173",
   useSuccessStatus: 200,
 };
 app.use(cors(options));
-app.use(express.json({limit:"1mb"}));
+app.use(express.json({limit:"5mb"}));
+app.use(
+  fileUpload({
+    useTempFiles: true
+  })
+)
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 

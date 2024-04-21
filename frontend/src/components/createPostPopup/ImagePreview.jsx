@@ -1,10 +1,35 @@
 import { useRef } from "react";
 import EmojiPickerBackground from "./EmojiPickerBackground";
 
-const ImagePreview = ({ text, user, setText, images, setImages,setShowPrev }) => {
+const ImagePreview = ({
+  text,
+  user,
+  setText,
+  images,
+  setImages,
+  setShowPrev,
+  setError
+}) => {
   const ImageInput = useRef(null);
   const handleImage = (e) => {
     let files = Array.from(e.target.files);
+    files.forEach((img) => {
+      if (
+        img.type !== "image/jpeg" &&
+        img.type !== "image/png" &&
+        img.type !== "image/gif" &&
+        img.type !== "image/webp"
+      ) {
+        setError(
+          `${img.name} format is unsupported! `
+        );
+        files = files.filter((item)=>item.name != item.name);
+        return ;
+      }
+      else if(img.size>1024*1024 *5){
+        setError(`${img.size} is size is too high`)
+      }
+    });
     files.forEach((img) => {
       const reader = new FileReader();
       reader.readAsDataURL(img);
@@ -12,7 +37,6 @@ const ImagePreview = ({ text, user, setText, images, setImages,setShowPrev }) =>
         setImages((images) => [...images, e.target.result]);
       };
     });
-    console.log(images);
   };
   return (
     <div className="overflow_a scrollbar">
@@ -21,6 +45,7 @@ const ImagePreview = ({ text, user, setText, images, setImages,setShowPrev }) =>
         <input
           type="file"
           multiple
+          accept="image/jpeg,image/png,image/webp,image/gif"
           hidden
           ref={ImageInput}
           onChange={handleImage}
@@ -37,7 +62,7 @@ const ImagePreview = ({ text, user, setText, images, setImages,setShowPrev }) =>
                 Add Photos/Videos
               </button>
             </div>
-            <div className="small_white_circle" onClick={()=>setImages([])}>
+            <div className="small_white_circle" onClick={() => setImages([])}>
               <i className="exit_icon"></i>
             </div>
             <div
@@ -64,7 +89,10 @@ const ImagePreview = ({ text, user, setText, images, setImages,setShowPrev }) =>
           </div>
         ) : (
           <div className="add_pics_inside1">
-            <div className="small_white_circle" onClick={()=>setShowPrev(true)}>
+            <div
+              className="small_white_circle"
+              onClick={() => setShowPrev(true)}
+            >
               <i className="exit_icon"></i>
             </div>
             <div className="add_col" onClick={() => ImageInput.current.click()}>
