@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 module.exports = async function (req, res, next) {
-    // console.log(Object.values(req.files));
+    console.log(req.files);
   try {
     if (!req.files || Object.values(req.files).flat().length === 0) {
       return res.status(400).send({ msg: "no files selected" });

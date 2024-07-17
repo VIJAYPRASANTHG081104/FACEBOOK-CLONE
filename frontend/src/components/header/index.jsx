@@ -18,9 +18,9 @@ import SearchMenu from "./SearchMenu.jsx";
 import AllMenu from "./AllMenu.jsx";
 import clickOutSide from "../../helper/clickOutSide.js";
 import UserMenu from "./userMenu/index.jsx";
-const Header = () => {
+import Home from "../../svg/home.jsx";
+const Header = ({page}) => {
   const user = useSelector((state) => state.user);
-  console.log(user);
   const color = "#65676b";
 
   const [showSearchMenu, setShowSearchMenu] = useState(false);
@@ -37,7 +37,6 @@ const Header = () => {
   clickOutSide(usermenu, () => {
     setShowUserMenu(false);
   });
-  console.log
   return (
     <header>
       <div className="header_left">
@@ -59,8 +58,8 @@ const Header = () => {
         <SearchMenu setShowSearchMenu={setShowSearchMenu} color={color} />
       )}
       <div className="header_middle">
-        <Link to="/" className="middle_icon active">
-          <HomeActive />
+        <Link to="/" className={`middle_icon ${page === 'home'?"active":"hover1"}`}>
+         {page === 'home'? <HomeActive />:<Home color={color}/>}
         </Link>
         <Link to="/" className="middle_icon hover1">
           <Friends color={color} />
@@ -77,7 +76,7 @@ const Header = () => {
         </Link>
       </div>
       <div className="header_right">
-        <Link to="/" className="profile_link hover1">
+        <Link to="/profile" className={`profile_link hover1 ${page === "profile" ? "active_link":""}`}>
           <img src={user?.picture} alt="user_img" />
           <span>{user?.first_name}</span>
         </Link>

@@ -1,5 +1,4 @@
 .home{
-    min-height: 100vh;
     background: var(--bg-secondary);
     display: grid;
     grid-template-columns: repeat(3,1fr);
@@ -12,7 +11,7 @@
 }
 
 @media (max-width:1175px) {
-    .stories,
+    .stories,.post,
     .send_verfication,
     .createPost{
         width: 84% !important;
@@ -59,13 +58,14 @@
         width: 20px;
     }
     .stories, 
+    .post,
     .send_verfication,
     .createPost {
     width: 100% !important;
 }
 }
 @media (max-width:960px) {
-    .createPost,.send_verfication{
+    .createPost,.post,.send_verfication{
         width: 93% !important;
     }
     .stories{
@@ -92,7 +92,7 @@
     .right_home{
         display: none;
     }
-    .createPost,.send_verfication{
+    .createPost,.post,.send_verfication{
         width: 110% !important;
     }
     .stories{
@@ -139,7 +139,7 @@
         margin-left: 0;
     }
     .stories,
-    .createPost,.send_verfication{
+    .createPost,.post,.send_verfication{
         width: 100%;
     }
     .stories .white_circle{

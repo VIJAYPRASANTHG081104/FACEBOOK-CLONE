@@ -12,41 +12,16 @@ import CreatePostPopup from "./components/createPostPopup";
 import { useSelector } from "react-redux";
 import clickOutSide from "./helper/clickOutSide";
 import axios from "axios";
+import { postsReducer } from "./functions/reducer";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "POST_REQUEST":
-      return {
-        ...state,
-        loading: true,
-        error: "",
-      };
-    case "POST_SUCCESS":
-      console.log("i am")
-      return {
-        ...state,
-        loading: false,
-        error: "",
-        post: action.payload,
-      };
-    case "POST_ERROR":
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
 
-    default:
-      return state;
-  }
-}
 
 function App() {
 
 
   const user = useSelector((state) => state.user);
   const [visible, setVisible] = useState(false);
-  const [{ loading, error, post }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, post }, dispatch] = useReducer(postsReducer, {
     loading: false,
     post: [],
     error: "",
@@ -87,6 +62,7 @@ function App() {
         </Route>
         <Route element={<LoggedInRoutes />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:username" element={<Profile />} />
           <Route
             path="/"
             element={<Home post={post} setVisible={setVisible} />}

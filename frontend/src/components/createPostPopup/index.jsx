@@ -42,17 +42,18 @@ const CreatePostPopup = ({ user, setVisible }) => {
       }
     } else if (images && images.length) {
       setLoading(true);
+      console.log(images);
       const postImages = images.map((img) => {
         return dataURItoBlob(img);
       });
       console.log(postImages);
-      const path = `${user.username}/post Images`;
+      const path = `${user.username}/post_images`;
       const formData = new FormData();
       formData.append("path", path);
       postImages.forEach((images) => {
+        console.log(images);
         formData.append("file", images);
       });
-      console.log(postImages);
       const response = await uploadImages(formData, path, user.token);
       console.log("now");
       console.log(response)

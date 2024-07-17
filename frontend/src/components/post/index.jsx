@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.css";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import Public from "../../svg/public";
 import Dots from "../../svg/dots";
+import ReactsPopup from "./ReactsPopup";
+import CreateComment from "./CreateComment";
+import PostMenu from "./PostMenu";
 
-const Post = ({ post }) => {
-  console.log(post);
+const Post = ({ post, user }) => {
+  const [visible, setVisible] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   return (
     <div className="post">
       <div className="post_header">
@@ -37,7 +41,8 @@ const Post = ({ post }) => {
             </div>
           </div>
         </Link>
-        <div className="post_header_right hover1">
+        <div className="post_header_right hover1"
+              onClick={()=>setShowMenu(prev=>!prev)}>
           <Dots color="#828387" />
         </div>
       </div>
@@ -77,6 +82,53 @@ const Post = ({ post }) => {
           )}
         </>
       )}
+      <div className="post_infos">
+        <div className="reacts_count">
+          <div className="reacts_count_imgs"></div>
+          <div className="reacts_count_num"></div>
+        </div>
+        <div className="to_right">
+          <div className="comments_count">13 comments</div>
+          <div className="share_count">1 share</div>
+        </div>
+      </div>
+      <div className="post_actions">
+        <ReactsPopup setVisible={setVisible} visible={visible} />
+        <div
+          className="post_action hover1"
+          onMouseOver={() =>
+            setTimeout(() => {
+              setVisible(true);
+            }, 500)
+          }
+          onMouseLeave={() =>
+            setTimeout(() => {
+              setVisible(false);
+            }, 500)
+          }
+        >
+          <i className="like_icon"></i>
+          <span>Like</span>
+        </div>
+        <div className="post_action hover1">
+          <i className="comment_icon"></i>
+          <span>Comment</span>
+        </div>
+        <div className="post_action hover1">
+          <i className="share_icon"></i>
+          <span>Share</span>
+        </div>
+      </div>
+      <div className="comment_wrap">
+        <div className="comments_order"></div>
+        <CreateComment user={user} />
+      </div>
+      {showMenu && <PostMenu
+        userId={user.id}
+        imagesLength={post?.images?.length}
+        setShowMenu={setShowMenu}
+        postUserId={post.user._id}
+      />}
     </div>
   );
 };

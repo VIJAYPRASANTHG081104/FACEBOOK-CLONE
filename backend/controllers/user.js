@@ -89,9 +89,7 @@ const login = async (req, res) => {
     if (!user) {
       return res.send({ msg: " No user found" });
     }
-    console.log(user);
     const check = await bcrypt.compare(password, user.password);
-    console.log(check);
     if (!check) {
       return res
         .status(400)
@@ -245,6 +243,22 @@ const changePassword = async (req, res) => {
   }
 };
 
+const getProfile = async(req,res) =>{
+  try {
+    const {username} = req.params;
+    // console.log(username)
+    const profile = await model.findOne({username}).select("-password");
+    if(!profile){
+      return res.status(200).send({ok:false});
+    }
+    return res.status(200).send(profile);
+  } catch (error) {
+    return res.status(500).send({
+      msg:error.message
+    });
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -253,5 +267,6 @@ module.exports = {
   findUser,
   sendResetPasswordCode,
   validateResetcode,
-  changePassword
+  changePassword,
+  getProfile
 };
