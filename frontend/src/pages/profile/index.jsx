@@ -8,8 +8,11 @@ import Cover from "./Cover";
 import './style.css'
 import ProfilePictureInfos from "./ProfilePictureInfos";
 import ProfileMenu from "./ProfileMenu";
+import PplYouMayKnow from "./PplYouMayKnow";
+import CreatePost from '../../components/createPost/index'
+import GridPosts from "./GridPosts";
 
-const Profile = () => {
+const Profile = ({setVisible}) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const { username } = useParams();
@@ -62,6 +65,20 @@ const Profile = () => {
           <Cover cover={profile.cover}/>
           <ProfilePictureInfos profile={profile}/>
           <ProfileMenu/>
+        </div>
+      </div>
+      <div className="profile_bottom">
+        <div className="profile_container">
+          <div className="bottom_container">
+            <PplYouMayKnow/>
+            <div className="profile_grid">
+              <div className="profile_left"></div>
+              <div className="profile_right">
+                <CreatePost user={user} profile={true} setVisible={setVisible}/>
+                <GridPosts/>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

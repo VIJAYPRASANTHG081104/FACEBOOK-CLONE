@@ -61,8 +61,8 @@ function App() {
           <Route path="/login" element={<Login />} />
         </Route>
         <Route element={<LoggedInRoutes />}>
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/:username" element={<Profile />} />
+          <Route path="/profile" element={<Profile setVisible={setVisible}/>} />
+          <Route path="/profile/:username" element={<Profile setVisible={setVisible}/>} />
           <Route
             path="/"
             element={<Home post={post} setVisible={setVisible} />}
