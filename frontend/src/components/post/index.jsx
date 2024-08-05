@@ -8,11 +8,11 @@ import ReactsPopup from "./ReactsPopup";
 import CreateComment from "./CreateComment";
 import PostMenu from "./PostMenu";
 
-const Post = ({ post, user }) => {
+const Post = ({ post, user, profile }) => {
   const [visible, setVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   return (
-    <div className="post">
+    <div className="post" style={{ width: `${profile && "100%"}` }}>
       <div className="post_header">
         <Link
           to={`/profile/${post.user.username}`}
@@ -41,8 +41,10 @@ const Post = ({ post, user }) => {
             </div>
           </div>
         </Link>
-        <div className="post_header_right hover1"
-              onClick={()=>setShowMenu(prev=>!prev)}>
+        <div
+          className="post_header_right hover1"
+          onClick={() => setShowMenu((prev) => !prev)}
+        >
           <Dots color="#828387" />
         </div>
       </div>
@@ -93,19 +95,19 @@ const Post = ({ post, user }) => {
         </div>
       </div>
       <div className="post_actions">
-        <ReactsPopup setVisible={setVisible} visible={visible} />
+        <ReactsPopup visible={visible} setVisible={setVisible} />
         <div
           className="post_action hover1"
-          onMouseOver={() =>
+          onMouseOver={() => {
             setTimeout(() => {
               setVisible(true);
-            }, 500)
-          }
-          onMouseLeave={() =>
+            }, 500);
+          }}
+          onMouseLeave={() => {
             setTimeout(() => {
               setVisible(false);
-            }, 500)
-          }
+            }, 500);
+          }}
         >
           <i className="like_icon"></i>
           <span>Like</span>
@@ -119,16 +121,18 @@ const Post = ({ post, user }) => {
           <span>Share</span>
         </div>
       </div>
-      <div className="comment_wrap">
+      <div className="comments_wrap">
         <div className="comments_order"></div>
         <CreateComment user={user} />
       </div>
-      {showMenu && <PostMenu
-        userId={user.id}
-        imagesLength={post?.images?.length}
-        setShowMenu={setShowMenu}
-        postUserId={post.user._id}
-      />}
+      {showMenu && (
+        <PostMenu
+          userId={user.id}
+          postUserId={post.user._id}
+          imagesLength={post?.images?.length}
+          setShowMenu={setShowMenu}
+        />
+      )}
     </div>
   );
 };

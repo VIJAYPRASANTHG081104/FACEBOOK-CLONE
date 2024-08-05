@@ -18,7 +18,7 @@ const SendVerification = ({user}) => {
             setSuccess(data.msg);
             console.log(data.activateLink);
         } catch (error) {
-          console.log(error);
+      
             setError(error.respones.data.msg);
         }
     }

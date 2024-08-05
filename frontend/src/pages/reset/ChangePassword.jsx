@@ -31,14 +31,14 @@ const ChangePassword = ({
                     .oneOf([Yup.ref("password")],"Password must match")
   });
   const changePassword = async()=>{
-    console.log("call")
+
     try {
       setLoading(true);
       await axios.post(`${import.meta.env.VITE_API_BACKEND_URL}/changepassword`,{
         email:userInfo.email,
         password
       });
-      console.log('done')
+  
       setError("");
       setLoading(false);
       navigate('/');

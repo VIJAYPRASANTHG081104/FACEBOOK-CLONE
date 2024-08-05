@@ -26,7 +26,7 @@ const Activate = () => {
     },[])
     const activateAccount = async() =>{
         try {
-            console.log('call')
+         
             setLoading(true);
             const {data} = await axios.post(`${import.meta.env.VITE_API_BACKEND_URL}/activate`,{token},{
                 headers:{

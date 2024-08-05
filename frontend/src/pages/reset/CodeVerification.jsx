@@ -30,7 +30,7 @@ const CodeVerification = ({
         email:userInfo.email,
         code
       });
-      console.log('done')
+    
       setError("");
       setLoading(false);
       setVisible(3);

@@ -12,7 +12,7 @@ import ChangePassword from "./ChangePassword";
 import PropagateLoader from "react-spinners/PropagateLoader";
 const Reset = () => {
   const [userInfo, setUserInfo] = useState("");
-  console.log(userInfo);
+
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(0);
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const Reset = () => {
   const [password, setPassword] = useState("");
   const [conf_password, setConf_password] = useState("");
   const user = useSelector((state) => state.user);
-  console.log(user);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logout = () => {

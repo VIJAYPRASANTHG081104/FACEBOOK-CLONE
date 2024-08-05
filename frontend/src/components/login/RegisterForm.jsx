@@ -25,7 +25,6 @@ const RegisterForm = ({setVisible}) => {
     gender: "",
   };
   const [user, setUser] = useState(userInfos);
-  console.log(user);
   const {
     first_name,
     last_name,

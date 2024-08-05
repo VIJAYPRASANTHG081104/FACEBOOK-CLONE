@@ -9,7 +9,7 @@ export const createPost = async (
   token
 ) => {
   try {
-
+    
     const { data } = await axios.post(
       `${import.meta.env.VITE_API_BACKEND_URL}/createpost`,
       {
@@ -24,10 +24,11 @@ export const createPost = async (
         }
       }
     );
-
+    console.log("new data"+data)
     return "ok";
 
   } catch (error) {
+
     return error.response.data.message;
   }
 };

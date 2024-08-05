@@ -1,4 +1,5 @@
 const model = require("../models/userModel");
+const postModel = require("../models/post");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {
@@ -246,16 +247,30 @@ const changePassword = async (req, res) => {
 const getProfile = async(req,res) =>{
   try {
     const {username} = req.params;
-    // console.log(username)
     const profile = await model.findOne({username}).select("-password");
     if(!profile){
       return res.status(200).send({ok:false});
     }
-    return res.status(200).send(profile);
+    const post = await postModel.find({user:profile._id}).populate("user");
+    console.log({...profile.toObject()});
+    return res.status(200).send({...profile.toObject(),post});
   } catch (error) {
     return res.status(500).send({
       msg:error.message
     });
+  }
+}
+
+const updateProfilePicture = async(req,res) =>{
+  try {
+    const {url} = req.body;
+    await model.findByIdAndUpdate(req.user.id,{
+      picture:url,
+    });
+    
+    return res.status(200).send(url);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 }
 
@@ -268,5 +283,6 @@ module.exports = {
   sendResetPasswordCode,
   validateResetcode,
   changePassword,
-  getProfile
+  getProfile,
+  updateProfilePicture
 };

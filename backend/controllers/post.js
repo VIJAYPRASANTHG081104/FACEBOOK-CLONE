@@ -1,6 +1,6 @@
 const postModel = require("../models/post");
 const createPost = async (req, res) => {
-  // console.log(req.body);
+  console.log("heheeheheh"+req.body);
   try {
     const post = await new postModel(req.body).save();
     res.status(200).send({ msg: "Post created", post: post });
@@ -17,7 +17,6 @@ const getAllPost = async (req, res) => {
       .sort({
         createdAt: "desc",
       });
-    console.log(data);
     return res.status(200).send(data);
   } catch (error) {
     return res.status(500).send({

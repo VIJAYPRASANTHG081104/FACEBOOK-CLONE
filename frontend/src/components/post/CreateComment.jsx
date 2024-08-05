@@ -41,10 +41,10 @@ const CreateComment = ({ user }) => {
     }
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload=(e) => {
-      setCommentImage(e.target.result);
+    reader.onload=(event) => {
+      setCommentImage(event.target.result);
     };
-    console.log(commentImage)
+   
   };
   return (
     <div className="comments_wrap">

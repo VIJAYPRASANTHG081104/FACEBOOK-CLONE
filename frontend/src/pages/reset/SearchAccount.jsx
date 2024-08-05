@@ -23,7 +23,7 @@ const SearchAccount = ({
 
 
   const handleSearch = async() => {
-    console.log("i am")
+
     try {
       setLoading(true);
       const { data } = await axios.post(

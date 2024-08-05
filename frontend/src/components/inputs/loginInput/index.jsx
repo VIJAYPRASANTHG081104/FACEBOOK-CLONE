@@ -10,7 +10,6 @@ const LoginInput = ({ placeholder, bottom, ...props }) => {
   const view1050 = useMediaQuery({
     query: "(max-width :1050px) ",
   });
-  console.log(field)
   return (
     <div className="input_wrap">
       {meta.touched && meta.error && !bottom && (

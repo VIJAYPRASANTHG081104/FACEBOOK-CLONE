@@ -15,7 +15,7 @@ const PplYouMayKnow = () => {
             {
                 stories.map((item,index)=>{
                     return(
-                        <AddFriendSmallCard item={item}/>
+                        <AddFriendSmallCard key={index} item={item}/>
                     )
                 })
             }

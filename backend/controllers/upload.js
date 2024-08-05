@@ -8,11 +8,9 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 const uploadImages = async (req, res) => {
-  // console.log(req.files)
   try {
     const { path } = req.body;
     let files = Object.values(req.files).flat();
-    console.log(files);
     let images = [];
     for (const file of files) {
       const url = await uploadCloudinary(file, path);
@@ -69,7 +67,6 @@ const listImages = async (req, res) => {
         res.json(result); // Changed 'res' to 'result'
       })
       .catch((err) => {
-        console.log(err.error.message);
         res.status(500).json({ error: err.error.message }); // Sending an error response
       });
     
