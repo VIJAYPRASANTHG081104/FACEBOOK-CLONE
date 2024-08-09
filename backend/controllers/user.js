@@ -251,7 +251,7 @@ const getProfile = async(req,res) =>{
     if(!profile){
       return res.status(200).send({ok:false});
     }
-    const post = await postModel.find({user:profile._id}).populate("user");
+    const post = await postModel.find({user:profile._id}).populate("user").sort({"createdAt":-1});
     console.log({...profile.toObject()});
     return res.status(200).send({...profile.toObject(),post});
   } catch (error) {

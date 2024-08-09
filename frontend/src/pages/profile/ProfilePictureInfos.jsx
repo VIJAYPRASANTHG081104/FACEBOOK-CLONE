@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ProfilePicture from "../../components/profilePicture";
 
-const ProfilePictureInfos = ({ profile, vistor }) => {
+const ProfilePictureInfos = ({ profile, vistor ,photos}) => {
   const [show, setShow] = useState(false);
+  const pRef = useRef(null);
+    // console.log(pRef)
+    const changePicture = (pictureUrl)=>{
+      pRef.current.style.backgroundImage = `url(${pictureUrl})`
+    }
   return (
     <div className="profile_img_wrap">
-      {show && <ProfilePicture  setShow={setShow}/>}
+      {show && <ProfilePicture photos={photos} changePicture={changePicture} setShow={setShow} />}
       <div className="profile_w_left">
         <div className="profile_w_img">
           <div
+            ref={pRef}
             className="profile_w_bg"
             style={{
               backgroundSize: "cover",
@@ -16,7 +22,10 @@ const ProfilePictureInfos = ({ profile, vistor }) => {
             }}
           ></div>
           {!vistor && (
-            <div className="profile_circle hover1" onClick={()=>setShow(true)}>
+            <div
+              className="profile_circle hover1"
+              onClick={() => setShow(true)}
+            >
               <i className="camera_filled_icon"></i>
             </div>
           )}

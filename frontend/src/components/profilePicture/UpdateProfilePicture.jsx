@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState,useEffect } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "../../helper/getCroppedImg";
 import { useSelector } from "react-redux";
@@ -6,15 +6,22 @@ import { uploadImages } from "../../functions/uploadImages";
 import { updateprofilePicture } from "../../functions/user";
 import { createPost } from "../../functions/post";
 import { useDispatch } from "react-redux";
+import PulseLoader from "react-spinners/PulseLoader";
 import Cookies from "js-cookie";
 
-const UpdateProfilePicture = ({ setImage, image, setError, setShow }) => {
+const UpdateProfilePicture = ({
+  setImage,
+  image,
+  setError,
+  setShow,
+  changePicture,
+}) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [description, setDescription] = useState("");
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-
+  const [loading, setLoading] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
   const slider = useRef(null);
@@ -45,9 +52,9 @@ const UpdateProfilePicture = ({ setImage, image, setError, setShow }) => {
     },
     [croppedAreaPixels]
   );
-
   const updateProfilePicture = async () => {
     try {
+      setLoading(true);
       let img = await getCroppedImage();
       let blob = await fetch(img).then((b) => b.blob());
       const path = `${user.username}/profile_pictures`;
@@ -59,7 +66,6 @@ const UpdateProfilePicture = ({ setImage, image, setError, setShow }) => {
       const updated_picture = await updateprofilePicture(
         res[0].url,
         user.token,
-        dispatch
       );
 
       if (updated_picture === "ok") {
@@ -74,13 +80,26 @@ const UpdateProfilePicture = ({ setImage, image, setError, setShow }) => {
 
         if (new_post === "ok") {
           setShow(false);
+          changePicture(res[0].url);
+          Cookies.set("user", JSON.stringify({
+            ...user,
+            picture: res[0].url,
+          }));
+          
+          dispatch({
+            type:"UPDATEPICTURE",
+            payload:res[0].url
+          })
         } else {
+          setLoading(false);
           setError(new_post);
         }
       } else {
+        setLoading(false);
         setError(updated_picture);
       }
     } catch (error) {
+      setLoading(false);
       setError(error.response.data.message);
     }
   };
@@ -150,8 +169,12 @@ const UpdateProfilePicture = ({ setImage, image, setError, setShow }) => {
         <div className="blue_link" onClick={() => setShow(false)}>
           Cancel
         </div>
-        <button className="blue_btn" onClick={() => updateProfilePicture()}>
-          Save
+        <button
+          className="blue_btn"
+          disabled={loading}
+          onClick={() => updateProfilePicture()}
+        >
+          {loading ? <PulseLoader color="#fff" size={5} /> : "Save"}
         </button>
       </div>
     </div>

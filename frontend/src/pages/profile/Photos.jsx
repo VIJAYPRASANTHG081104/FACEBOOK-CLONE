@@ -1,45 +1,7 @@
 import axios from "axios";
-import { useEffect, useReducer } from "react";
 import { photosReducer } from "../../functions/reducer.js";
 
-export default function Photos({ userName, token }) {
-  const [{ loading, error, photos }, dispatch] = useReducer(photosReducer, {
-    loading: false,
-    photos: {},
-    error: "",
-  });
-  useEffect(() => {
-    getPhotos();
-  }, [userName]);
-  const path = `${userName}/*`;
-  const max = 30;
-  const sort = "desc";
-
-  const getPhotos = async () => {
-    try {
-      dispatch({
-        type: "PHOTO_REQUEST",
-      });
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_BACKEND_URL}/listImages`,
-        { path, sort, max },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      dispatch({
-        type: "PHOTO_SUCCESS",
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: "PHOTO_ERROR",
-        payload: error.response.data.message,
-      });
-    }
-  };
+export default function Photos({photos}) {
   return (
     <div className="profile_card">
       <div className="profile_card_header">

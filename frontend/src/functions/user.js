@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-export const updateprofilePicture = async (url, token, dispatch) => {
+export const updateprofilePicture = async (url, token) => {
   try {
     const { data } = await axios.put(
       `${import.meta.env.VITE_API_BACKEND_URL}/updateProfilePicture`,
@@ -15,21 +15,21 @@ export const updateprofilePicture = async (url, token, dispatch) => {
       }
     );
 
-    dispatch({ type: "UPDATEPICTURE", payload: data });
-    let cookie = Cookies.get("user");
+    // dispatch({ type: "UPDATEPICTURE", payload: data });
+    // let cookie = Cookies.get("user");
 
-    if (cookie) {
-      try {
-        cookie = JSON.parse(cookie);
-        cookie.picture = data;
-        Cookies.set("user", JSON.stringify(cookie));
-        console.log(cookie);
-      } catch (error) {
-        console.error("Failed to parse the cookie:", error);
-      }
-    } else {
-      console.log("No cookie found with the name 'user'.");
-    }
+    // if (cookie) {
+    //   try {
+    //     cookie = JSON.parse(cookie);
+    //     cookie.picture = data;
+    //     Cookies.set("user", JSON.stringify(cookie));
+    //     console.log(cookie);
+    //   } catch (error) {
+    //     console.error("Failed to parse the cookie:", error);
+    //   }
+    // } else {
+    //   console.log("No cookie found with the name 'user'.");
+    // }
     return "ok";
   } catch (error) {
     return error.response.data.message;
