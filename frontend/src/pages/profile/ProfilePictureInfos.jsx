@@ -1,16 +1,22 @@
 import { useRef, useState } from "react";
 import ProfilePicture from "../../components/profilePicture";
 
-const ProfilePictureInfos = ({ profile, vistor ,photos}) => {
+const ProfilePictureInfos = ({ profile, vistor, photos, othername }) => {
   const [show, setShow] = useState(false);
   const pRef = useRef(null);
-    // console.log(pRef)
-    const changePicture = (pictureUrl)=>{
-      pRef.current.style.backgroundImage = `url(${pictureUrl})`
-    }
+  // console.log(pRef)
+  const changePicture = (pictureUrl) => {
+    pRef.current.style.backgroundImage = `url(${pictureUrl})`;
+  };
   return (
     <div className="profile_img_wrap">
-      {show && <ProfilePicture photos={photos} changePicture={changePicture} setShow={setShow} />}
+      {show && (
+        <ProfilePicture
+          photos={photos}
+          changePicture={changePicture}
+          setShow={setShow}
+        />
+      )}
       <div className="profile_w_left">
         <div className="profile_w_img">
           <div
@@ -33,7 +39,7 @@ const ProfilePictureInfos = ({ profile, vistor ,photos}) => {
         <div className="profile_w_col">
           <div className="profile_name">
             {profile.first_name} {profile.last_name}
-            <div className="othername">(othername)</div>
+            <div className="othername">{othername && `(${othername})`}</div>
           </div>
           <div className="profile_friend_count"></div>
           <div className="profile_friend_imgs"></div>

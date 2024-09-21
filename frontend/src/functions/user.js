@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 
 export const updateprofilePicture = async (url, token) => {
   try {
@@ -30,6 +29,25 @@ export const updateprofilePicture = async (url, token) => {
     // } else {
     //   console.log("No cookie found with the name 'user'.");
     // }
+    return "ok";
+  } catch (error) {
+    return error.response.data.message;
+  }
+};
+
+export const updateCover = async (url, token) => {
+  try {
+    const { data } = await axios.put(
+      `${import.meta.env.VITE_API_BACKEND_URL}/updateCover`,
+      {
+        url,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return "ok";
   } catch (error) {
     return error.response.data.message;

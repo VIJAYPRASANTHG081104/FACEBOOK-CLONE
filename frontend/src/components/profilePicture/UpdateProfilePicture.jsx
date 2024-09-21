@@ -52,6 +52,7 @@ const UpdateProfilePicture = ({
     },
     [croppedAreaPixels]
   );
+  
   const updateProfilePicture = async () => {
     try {
       setLoading(true);

@@ -2,15 +2,25 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import useClickOutside from "../../helper/clickOutSide";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "../../helper/getCroppedImg";
+import { uploadImages } from "../../functions/uploadImages";
+import { useSelector } from "react-redux";
+import { updateCover } from "../../functions/user";
+import { createPost } from "../../functions/post";
+import PulseLoader from "react-spinners/PulseLoader";
+import OldCovers from "./OldCovers";
 
-export default function Cover({ cover, visitor }) {
+export default function Cover({ cover, visitor, photos }) {
   const [showCoverMneu, setShowCoverMenu] = useState(false);
+  const [loading, setLoading] = useState(false);
   const menuRef = useRef(null);
   const [coverPicture, setCoverPicture] = useState("");
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const refInput = useRef(null);
+  const cRef = useRef(null);
+  const user = useSelector((state) => state.user);
+  const [show, setShow] = useState(false);
   useClickOutside(menuRef, () => setShowCoverMenu(false));
 
   const [error, setError] = useState("");
@@ -57,17 +67,66 @@ export default function Cover({ cover, visitor }) {
   useEffect(() => {
     setWidth(coverCopper.current.clientWidth);
   }, [window.innerWidth]);
+
+  const updateCoverPicture = async () => {
+    try {
+      setLoading(true);
+      let img = await getCroppedImage();
+      let blob = await fetch(img).then((b) => b.blob());
+      const path = `${user.username}/cover_pictures`;
+      let formData = new FormData();
+      formData.append("file", blob);
+      formData.append("path", path);
+      const res = await uploadImages(formData, path, user.token);
+
+      const updated_picture = await updateCover(res[0].url, user.token);
+
+      if (updated_picture === "ok") {
+        const new_post = await createPost(
+          "coverPicture",
+          null,
+          null,
+          res,
+          user.id,
+          user.token
+        );
+
+        if (new_post === "ok") {
+          setLoading(false);
+          setCoverPicture("");
+          console.log(cRef.current);
+          cRef.current.src = res[0].url;
+        } else {
+          setLoading(false);
+          setError(new_post);
+        }
+      } else {
+        setLoading(false);
+        setError(updated_picture);
+      }
+    } catch (error) {
+      setLoading(false);
+      setError(error.response.data.message);
+    }
+  };
   return (
     <div className="profile_cover" ref={coverCopper}>
-      { coverPicture && (
+      {coverPicture && (
         <div className="save_changes_cover">
           <div className="save_changes_left">
             <i className="public_icon"></i>
             Your cover photo is public
           </div>
           <div className="save_changes_right">
-            <button className="blue_btn opacity_btn">Cancel</button>
-            <button className="blue_btn">Save Changes</button>
+            <button
+              className="blue_btn opacity_btn"
+              onClick={() => setCoverPicture("")}
+            >
+              Cancel
+            </button>
+            <button className="blue_btn" onClick={updateCoverPicture}>
+              {loading ? <PulseLoader color="#fff" size={5} /> : "Save Changes"}
+            </button>
           </div>
         </div>
       )}
@@ -100,7 +159,9 @@ export default function Cover({ cover, visitor }) {
           />
         </div>
       )}
-      {cover && <img src={cover} className="cover" alt="" />}
+      {cover && !coverPicture && (
+        <img src={cover} ref={cRef} className="cover" alt="" />
+      )}
       {!visitor && (
         <div className="update_cover_wrapper">
           <div
@@ -112,7 +173,10 @@ export default function Cover({ cover, visitor }) {
           </div>
           {showCoverMneu && (
             <div className="open_cover_menu" ref={menuRef}>
-              <div className="open_cover_menu_item hover1">
+              <div
+                className="open_cover_menu_item hover1"
+                onClick={() => setShow(true)}
+              >
                 <i className="photo_icon"></i>
                 Select Photo
               </div>
@@ -126,6 +190,13 @@ export default function Cover({ cover, visitor }) {
             </div>
           )}
         </div>
+      )}
+      {show && (
+        <OldCovers
+          setShow={setShow}
+          setCoverPicture={setCoverPicture}
+          photos={photos}
+        />
       )}
     </div>
   );

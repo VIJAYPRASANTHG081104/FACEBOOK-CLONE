@@ -11,7 +11,6 @@ import PostMenu from "./PostMenu";
 const Post = ({ post, user, profile }) => {
   const [visible, setVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  console.log(post);
   return (
     <div className="post" style={{ width: `${profile && "100%"}` }}>
       <div className="post_header">
@@ -28,7 +27,7 @@ const Post = ({ post, user, profile }) => {
                   `updated ${
                     post.user.gender === "male" ? "his" : "her"
                   } profile picture`}
-                {post.type == "cover" &&
+                {post.type == "coverPicture" &&
                   `updated ${
                     post.user.gender === "male" ? "his" : "her"
                   } cover picture`}
@@ -96,7 +95,9 @@ const Post = ({ post, user, profile }) => {
           />
         </div>
       ) : (
-        <div className="post_cover_wrap"></div>
+        <div className="post_cover_wrap">
+          <img src={post.images[0].url} alt=""/>
+        </div>
       )}
       <div className="post_infos">
         <div className="reacts_count">

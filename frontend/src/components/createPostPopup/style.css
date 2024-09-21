@@ -6,8 +6,7 @@
   background: var(--bg-primary);
   box-shadow: 0 12px 28px 0 var(--shadow-1), 0 2px 4px 0 var(--shadow-2),
     inset 0 0 0 1px var(--shadow-inset);
-  min-height: 200px;
-  /* height: 570px; */
+  min-height: 228px;
   width: 500px;
   border-radius: 5px;
 }
@@ -143,7 +142,7 @@
   cursor: pointer;
 }
 .overflow_a {
-  max-height: 320px !important;
+  max-height: 500px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -416,4 +415,46 @@
   100% {
     width: 100%;
   }
+}
+@media (max-width: 735px) {
+  .rlmove {
+    right: 10px;
+  }
+}
+@media (max-width: 550px) {
+  .postBox {
+    width: 96%;
+  }
+
+  .post_backgrounds {
+    width: 80%;
+    overflow-x: auto;
+  }
+  .post_backgrounds img {
+    width: 30px;
+    height: 30px;
+  }
+}
+@media (max-width: 405px) {
+  .preview_actions {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .mobile_text {
+    width: 50%;
+  }
+}
+@media (max-width: 380px) {
+  .post_input {
+    font-size: 17px;
+  }
+  .addtoyourpost {
+    justify-content: center;
+  }
+  .addto_text {
+    display: none;
+  }
+}
+.l0 {
+  left: 0;
 }
